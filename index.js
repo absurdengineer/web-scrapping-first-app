@@ -24,7 +24,10 @@ const puppeteer = require("puppeteer");
       // the specified element which is passed by the $$eval() only.
       return images.map((image) => image.src);
     });
-    await fs.writeFile("photos.txt", photos.join("\r\n"));
+    for (const photo of photos) {
+      const imagePage = await page.goto(photo);
+      await fs.writeFile(photo.split("/").pop(), await imagePage.buffer());
+    }
     await browser.close();
   } catch (error) {
     console.log(error);
