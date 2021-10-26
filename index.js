@@ -28,13 +28,24 @@ const puppeteer = require("puppeteer");
     //   const imagePage = await page.goto(photo);
     //   await fs.writeFile(photo.split("/").pop(), await imagePage.buffer());
     // }
-    await page.click("#clickme");
-    const data = await page.$eval("#data", (data) => data.textContent);
-    // $eval() is a function provided by the puppeteer which is specially dsigned to
-    // deal with single elements with the same selector that basically takes 2 argument.
-    // 1 the css selector, and 2 is an arrow function that takes 1 argument which is
-    // the specified element which is passed by the $eval() only.
-    console.log(data);
+    // await page.click("#clickme");
+    // const data = await page.$eval("#data", (data) => data.textContent);
+    // // $eval() is a function provided by the puppeteer which is specially dsigned to
+    // // deal with single elements with the same selector that basically takes 2 argument.
+    // // 1 the css selector, and 2 is an arrow function that takes 1 argument which is
+    // // the specified element which is passed by the $eval() only.
+    // console.log(data);
+    await page.type("#ourfield", "blue");
+    await Promise.all([
+      page.click("#ourform button"),
+      page.waitForNavigation(),
+    ]);
+
+    const message = await page.$eval(
+      "#message",
+      (message) => message.textContent
+    );
+    console.log(message);
     await browser.close();
   } catch (error) {
     console.log(error);
